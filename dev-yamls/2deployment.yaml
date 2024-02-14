@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  kafka-bigtable
+  namespace: services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app:  kafka-bigtable
+  template:
+    metadata:
+      labels:
+        app:  kafka-bigtable
+    spec:
+      containers:
+        - name:  kafka-bigtable
+          image: zeliotcentralregistry/kafka-bigtable:1.0.5
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: kafka-bigtable-config
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: regcred
